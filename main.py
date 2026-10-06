@@ -26,8 +26,8 @@ def show_expenses():
     if not expenses:
         print("Пока пусто")
         return
-    for e in expenses:
-        print(f"{e['amount']} — {e['category']}")
+    for i, e in enumerate(expenses, 1):
+        print(f"{i}. {e['amount']} — {e['category']}")
 
 def sum_by_category():
     category = input("Категория: ")
@@ -37,6 +37,23 @@ def sum_by_category():
             total += float(e["amount"])
     print(f"Итого по '{category}': {total}")
 
+def delete_expense():
+    if not expenses:
+        print("Нечего удалять")
+        return
+    show_expenses()
+    try:
+        index = int(input("Номер для удаления: ")) - 1
+    except ValueError:
+        print("Нужно ввести число")
+        return
+    if 0 <= index < len(expenses):
+        expenses.pop(index)
+        save()
+        print("Удалено")
+    else:
+        print("Нет такого номера")
+
 def main():
     load()
     while True:
@@ -45,6 +62,7 @@ def main():
         print("2. Показать все")
         print("3. Выход")
         print("4. Сумма по категории")
+        print("5. Удалить расход")
         choice = input("Выбор: ")
 
         if choice == "1":
@@ -56,6 +74,8 @@ def main():
             break
         elif choice == "4":
             sum_by_category()
+        elif choice == "5":
+            delete_expense()
         else:
             print("Не понял, попробуй снова")
 
